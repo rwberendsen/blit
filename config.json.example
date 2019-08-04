@@ -1,0 +1,6 @@
+{
+    "ingestDirectories": {
+        "asn": "<ABS_PATH>",
+        "rabo": "<ABS_PATH>"
+    }
+}
