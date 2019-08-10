@@ -1,10 +1,8 @@
-SET DATESTYLE TO ISO,DMY;
+DROP TABLE IF EXISTS {schema_prefix}_staging.asn;
 
-DROP TABLE IF EXISTS blit.ingest_asn_staging;
-
-CREATE TABLE richard.asn (
+CREATE TABLE {schema_prefix}_staging.asn (
     boekingsdatum DATE NOT NULL
-  , opdrachtgeversrekening VARCHAR(18) NULL
+  , opdrachtgeversrekening VARCHAR(18) NOT NULL
   , tegenrekeningnummer VARCHAR(34) NULL
   , naam_tegenrekening VARCHAR(70) NULL
   , adres VARCHAR(42) NULL
@@ -22,8 +20,5 @@ CREATE TABLE richard.asn (
   , betalingskenmerk VARCHAR(18) NULL
   , omschrijving VARCHAR(520)
   , afschriftnummer SMALLINT
-  , UNIQUE (journaaldatum, volgnummer_transactie)
+  , UNIQUE (opdrachtgeversrekening, journaaldatum, volgnummer_transactie)
 );
-
-
-\COPY blit.ingest_asn_staging FROM %s DELIMITER ',' CSV;

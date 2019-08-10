@@ -1,6 +1,8 @@
-DROP TABLE IF EXISTS blit.transaction;
+CREATE SCHEMA IF NOT EXISTS {schema_prefix}_staging;
+CREATE SCHEMA IF NOT EXISTS {schema_prefix}_integration;
 
-CREATE TABLE blit.transaction (
+DROP TABLE IF EXISTS {schema_prefix}_integration.transaction;
+CREATE TABLE {schema_prefix}_integration.transaction (
     serial_number VARCHAR(18) NOT NULL
   , processing_date DATE NOT NULL
   , interest_date DATE NOT NULL
@@ -27,4 +29,4 @@ CREATE TABLE blit.transaction (
   , rabo_mandate_reference VARCHAR(35)
   , rabo_receiving_party_id VARCHAR(35)
   , UNIQUE(account, serial_number)
- ); 
+ );

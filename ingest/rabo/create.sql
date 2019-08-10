@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS blit.ingest_rabo_staging;
+DROP TABLE IF EXISTS {schema_prefix}_staging.rabo;
 
-CREATE TABLE richard.rabo (
+CREATE TABLE {schema_prefix}_staging.rabo (
     iban VARCHAR(34) NOT NULL
   , munt VARCHAR(4) NOT NULL
   , bic VARCHAR(11) NOT NULL
@@ -29,6 +29,3 @@ CREATE TABLE richard.rabo (
   , koers VARCHAR(11)
   , UNIQUE (iban, volgnr)
 );
-
-
-\COPY blit.ingest_rabo_staging FROM %s DELIMITER ',' CSV HEADER ENCODING 'latin-1';

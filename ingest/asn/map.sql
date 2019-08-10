@@ -1,13 +1,17 @@
-INSERT INTO blit.transaction
+-- This script maps the ASN schema to the blit schema,
+-- and makes sure no duplicate information is stored
+INSERT INTO {schema_prefix}_integration.transaction
 SELECT
-    to_char(CURRENT_DATE, 'YYYYMMDD') || to_char(volgnummer_transactie, 'FM0000000000') AS serial_number
+    to_char(CURRENT_DATE, 'YYYYMMDD') || to_char(volgnummer_transactie,
+      'FM0000000000') AS serial_number
   , journaaldatum AS processing_date
   , valutadatum AS interest_rate
   , 'asn' AS bank
   , opdrachtgeversrekening AS account
   , valutasoort_rekening AS currency
   , CAST(transactiebedrag * 100 AS INTEGER) AS amount
-  , CAST(saldo_rekening_voor_mutatie * 100 AS INTEGER) AS balance_before_transaction
+  , CAST(saldo_rekening_voor_mutatie * 100 AS INTEGER)
+      AS balance_before_transaction
   , tegenrekeningnummer AS contra_account
   , naam_tegenrekening AS name_counterparty
   , NULL AS name_ultimate_party
@@ -24,7 +28,12 @@ SELECT
   , interne_transactiecode AS rabo_internal_classification_code
   , globale_transactiecode AS asn_global_classification_code
   , NULL AS rabo_mandate_reference
-  , NULL AS rabo_receiving_party_id 
+  , NULL AS rabo_receiving_party_id
 FROM
-  blit.ingest_asn
+  {schema_prefix}_staging.asn l
+LEFT JOIN
+  {schema_prefix}_integration.transaction r
+ON l.account = r.account
+AND l.serial_number = r.serial_number
+WHERE r.account IS NULL
 ;
