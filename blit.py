@@ -1,5 +1,7 @@
 """
 blit.py
+
+Call if you want to run everything
 """
 
 
@@ -8,17 +10,15 @@ import os
 import sys
 
 
-def ingest(ingestDirectories={}, schema_prefix='blit'):
-    for bank, directory in ingestDirectories.items():
-        print(bank)
-        print(directory)
+import integrate
+
 
 
 def main(argv):
     with open('config.json', 'r') as f:
         config = json.load(f)
 
-    ingest(**config)
+    integrate.integrate(**config)
     return 0
 
 
